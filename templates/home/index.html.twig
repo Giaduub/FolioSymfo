@@ -4,36 +4,23 @@
 
 {% block body %}
 
+
+
 <section class="articles">
+
+ {% for article in articles %}
+
  <article>
-     <h2>Titre de l'article</h2>
-     <div class="metadata">Ecrit le 10/05/2021 à 15:00 dans la catégorie Projet</div>
+     <h2>{{ article.title }}</h2>
+     <div class="metadata">Ecrit le {{ article.createdAt | date ('d/m/Y')}} à {{ article.createdAt | date ('H:i')}} à 15:00 dans la catégorie Projet</div>
      <div class="content">
-         <img src="http://placehold.it/150x150" alt="">
-         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore libero recusandae vel blanditiis earum deserunt.</p>
-         <p>Pariatur sapiente nemo quae atque esse natus, ea voluptatem quos sint consequatur maxime, aliquam iure.</p>
+         <img src="{{ article.image }}" alt="">
+         {{ article.content | raw }}
          <a href="{{ path('blog_show')}}" class="btn btn-primary">Lire la suite</a>
      </div>
  </article>
- <article>
-     <h2>Titre de l'article</h2>
-     <div class="metadata">Ecrit le 10/05/2021 à 15:00 dans la catégorie Projet</div>
-     <div class="content">
-         <img src="http://placehold.it/150x150" alt="">
-         <p>Maiores ut voluptatibus voluptate odio natus, unde, praesentium cupiditate doloremque quo commodi quas corrupti ratione!</p>
-         <p>Rerum consequuntur fugiat doloremque officia pariatur excepturi asperiores tempore cumque voluptas. Ducimus quisquam omnis pariatur.</p>
-         <a href="{{ path('blog_show')}}" class="btn btn-primary">Lire la suite</a>
-     </div>
- </article>
- <article>
-     <h2>Titre de l'article</h2>
-     <div class="metadata">Ecrit le 10/05/2021 à 15:00 dans la catégorie Projet</div>
-     <div class="content">
-         <img src="http://placehold.it/150x150" alt="">
-         <p>Est doloremque aperiam consequuntur atque, enim quos non voluptatum quisquam at facilis alias sunt dolore!</p>
-         <p>Sit officia doloremque ipsa? Eum odit adipisci ad aliquam deserunt doloribus aut quaerat neque incidunt.</p>
-         <a href="{{ path('blog_show')}}" class="btn btn-primary">Lire la suite</a>
-     </div></div>
- </article>
+
+ {% endfor %}
+ 
 </section>
 {% endblock %}
