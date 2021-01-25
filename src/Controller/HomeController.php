@@ -2,15 +2,19 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Article;
 use App\Entity\Project;
+use App\Form\ProjectType;
 use App\Repository\ArticleRepository;
 use App\Repository\ProjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -41,25 +45,46 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/home/new", name="projet_create")
+     * @Route("/projet/new", name="projet_create")
+     * @Route("/projet/{id}/edit", name="projet_edit")
      */
-    public function create(Request $request, EntityManagerInterface $manager) {
+    public function form(Project $project = null, Request $request, EntityManagerInterface $manager) {
         
 
-        if($request->request->count() > 0){
+        if(!$project) {
             $project = new Project();
-            $project->setTitle($request->request->get('Title'))
-                    ->setDescription($request->request->get('Description'))
-                    ->setImage($request->request->get('Image'))
-                    ->setGithub($request->request->get('Github'))
-                    ->setWeblink($request->request->get('Weblink'));
-
-                    $manager->persist($project);
-                    $manager->flush();
-            
         }
-        return $this->render('home/create.html.twig');
-    }     
+
+        $form = $this->createFormBuilder($project)
+                     ->add('Title')
+                     ->add('Description')
+                     ->add('Image')
+                     ->add('Github')
+                     ->add('Weblink')
+                     ->getForm();
+ 
+                    $form->handleRequest($request);
+
+                    if($form->isSubmitted() && $form->isValid()){
+                        $manager->persist($project);
+                        $manager->flush();
+
+                        return $this->redirectToRoute('projet_show', ['id' => $project->getId()]);
+                    }
+
+  return $this->render('home/create.html.twig', [
+            'formProject' => $form->createView()
+        ]);
+//         $form = $this->createForm(ProjectType::class, $project);
+// $form->handleRequest($request);
+// if($form->isSubmitted() && $form->isValid()){
+// $manager->persist($project);
+// $manager->flush();
+// return $this->redirectToRoute('projets');
+}
+
+      
+    
 
 
     /**

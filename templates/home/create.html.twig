@@ -4,13 +4,17 @@
 
 <h1>Création d'un article</h1>
 
-<form action="" method="POST">
-<input type="text" name="Title" placeholder="Titre du projet">
-<textarea name="Description" id="" placeholder="Description" cols="30" rows="10"></textarea>
-<input type="text" name="Image" placeholder=" Image de l'article">
-<input type="text" name="Github" placeholder=" Github">
-<input type="text" name="Weblink" placeholder=" Weblink">
-<button type="submit"> Envoyer</button>
-</form>
+{{ form_start(formProject)}}
+
+
+{{ form_row(formProject.Title, {'attr': {'placeholder' : "Titre de projet",'class' : "form-control" }})}}
+{{ form_row(formProject.Description, {'attr': {'placeholder' : "Description du projet",'class' : "form-control"}})}}
+{{ form_row(formProject.Image, {'attr': {'placeholder' : "Lien de l'image",'class' : "form-control"}})}}
+{{ form_row(formProject.Github, {'attr': {'placeholder' : "Lien Github",'class' : "form-control"}})}}
+{{ form_row(formProject.Weblink, {'attr': {'placeholder' : "Weblink",'class' : "form-control"}})}}
+
+<button type="submit" class="btn btn-success"> Ajouter l'article</button>
+
+{{ form_end(formProject)}}
 
 {% endblock %}
