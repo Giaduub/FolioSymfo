@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class HomeController extends AbstractController
 {
     /**
@@ -55,13 +56,15 @@ class HomeController extends AbstractController
             $project = new Project();
         }
 
-        $form = $this->createFormBuilder($project)
-                     ->add('Title')
-                     ->add('Description')
-                     ->add('Image')
-                     ->add('Github')
-                     ->add('Weblink')
-                     ->getForm();
+        // $form = $this->createFormBuilder($project)
+        //              ->add('Title')
+        //              ->add('Description')
+        //              ->add('Image')
+        //              ->add('Github')
+        //              ->add('Weblink')
+        //              ->getForm();
+
+                    $form = $this->createForm(ProjectType::class, $project);
  
                     $form->handleRequest($request);
 
@@ -73,14 +76,21 @@ class HomeController extends AbstractController
                     }
 
   return $this->render('home/create.html.twig', [
-            'formProject' => $form->createView()
+            'formProject' => $form->createView(),
+            'editMode' => $project->getId() !== null
         ]);
-//         $form = $this->createForm(ProjectType::class, $project);
-// $form->handleRequest($request);
-// if($form->isSubmitted() && $form->isValid()){
-// $manager->persist($project);
-// $manager->flush();
-// return $this->redirectToRoute('projets');
+
+}
+
+/**
+* @Route("/delete/{id}", name="delete")
+*
+*/
+public function delete(EntityManagerInterface $manager, Project $project): Response
+{
+$manager->remove($project);
+$manager->flush();
+return $this->redirectToRoute('projets');
 }
 
       

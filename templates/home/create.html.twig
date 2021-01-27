@@ -1,20 +1,37 @@
+
 {% extends 'base.html.twig' %}
+
+
+
 
 {% block body %}
 
+{% if not app.user %}
+
+                    <a class="nav-link" href="{{ path('security_login')}}"><button type="submit" class="btn btn-success">Connexion</button></a>
+                
+
+{% else %}
 <h1>Création d'un article</h1>
 
 {{ form_start(formProject)}}
 
 
-{{ form_row(formProject.Title, {'attr': {'placeholder' : "Titre de projet",'class' : "form-control" }})}}
-{{ form_row(formProject.Description, {'attr': {'placeholder' : "Description du projet",'class' : "form-control"}})}}
-{{ form_row(formProject.Image, {'attr': {'placeholder' : "Lien de l'image",'class' : "form-control"}})}}
-{{ form_row(formProject.Github, {'attr': {'placeholder' : "Lien Github",'class' : "form-control"}})}}
-{{ form_row(formProject.Weblink, {'attr': {'placeholder' : "Weblink",'class' : "form-control"}})}}
+{{ form_row(formProject.title, {'attr': {'placeholder' : "Titre de projet",'class' : "form-control" }})}}
+{{ form_row(formProject.description, {'attr': {'placeholder' : "Description du projet",'class' : "form-control"}})}}
+{{ form_row(formProject.image, {'attr': {'placeholder' : "Lien de l'image",'class' : "form-control"}})}}
+{{ form_row(formProject.github, {'attr': {'placeholder' : "Lien Github",'class' : "form-control"}})}}
+{{ form_row(formProject.weblink, {'attr': {'placeholder' : "Weblink",'class' : "form-control"}})}}
 
-<button type="submit" class="btn btn-success"> Ajouter l'article</button>
+<button type="submit" class="btn btn-success"> 
+    {% if editMode %}
+     Enregistrer les modifications
+     {% else %}
+Ajouter l'article
+{% endif %}
+</button>
 
 {{ form_end(formProject)}}
-
+{% endif %}
 {% endblock %}
+
